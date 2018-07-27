@@ -8,50 +8,50 @@ const fwip = (function() {
       return;
     }
 
-    let elementArray = elementsToArray(elems);
-    let childrenArray = whiteVanWithCandyInside(elementArray);
+    const childObjectsArray = getChildObjects(elems);
 
-    childrenArray.forEach(function(childObject) {
-      childObject.childElement.addEventListener("focus", function() {
-        childObject.parentElement.classList.add("focus-within");
+    childObjectsArray.forEach(function(childObject) {
+      const child = childObject.childElement;
+      const parent = childObject.parentElement;
+      child.addEventListener("focus", function() {
+        parent.classList.add("focus-within");
       });
 
-      childObject.childElement.addEventListener("blur", function() {
-        childObject.parentElement.classList.remove("focus-within");
+      child.addEventListener("blur", function() {
+        parent.classList.remove("focus-within");
       });
     });
   };
 
   // utils
-  const elementsToArray = function(elems) {
-    let array = [];
-    if (elems[0] == undefined) {
-      // single element
-      array.push(elems);
-    } else {
-      [].forEach.call(elems, function(elem) {
-        array.push(elem);
-      });
-    }
-    return array;
-  };
+  getChildObjects(elems) {
+    const parentElementsArray = elementArray(elems);
+    let childObjects = [];
 
-  const whiteVanWithCandyInside = function(parents) {
-    // gets all the children
-    let children = [];
-
-    parents.forEach(function(parent) {
-      elementsToArray(parent.getElementsByTagName("*")).forEach(function(
-        child
-      ) {
-        children.push({
+    parentElementsArray.forEach(function(parent) {
+      elementsToArray(parent.getElementsByTagName("*"))
+      .forEach(function(child) {
+        childObjects.push({
           childElement: child,
           parentElement: parent
         });
       });
     });
 
-    return children;
+    return childObjects;
+  }
+
+  const elementsToArray = function(elems) {
+    let elementArray = [];
+    if (elems[0] == undefined) {
+      // single element
+      elementArray.push(elems);
+    } else {
+      [].forEach.call(elems, function(elem) {
+        elementArray.push(elem);
+      });
+    }
+    return elementArray;
   };
 
   return {
