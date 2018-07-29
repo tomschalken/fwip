@@ -1,7 +1,7 @@
-const fwip = (function() {
+const fwip = (function () {
   "use strict";
 
-  const init = function(elements) {
+  const init = function (elements) {
     const elems = elements || false;
 
     if (!elems) {
@@ -10,44 +10,44 @@ const fwip = (function() {
 
     const childObjectsArray = getChildObjects(elems);
 
-    childObjectsArray.forEach(function(childObject) {
+    childObjectsArray.forEach(function (childObject) {
       const child = childObject.childElement;
       const parent = childObject.parentElement;
-      child.addEventListener("focus", function() {
+      child.addEventListener("focus", function () {
         parent.classList.add("focus-within");
       });
 
-      child.addEventListener("blur", function() {
+      child.addEventListener("blur", function () {
         parent.classList.remove("focus-within");
       });
     });
   };
 
   // utils
-  getChildObjects(elems) {
-    const parentElementsArray = elementArray(elems);
+  const getChildObjects = function (elems) {
+    const parentElementsArray = elementsToArray(elems);
     let childObjects = [];
 
-    parentElementsArray.forEach(function(parent) {
+    parentElementsArray.forEach(function (parent) {
       elementsToArray(parent.getElementsByTagName("*"))
-      .forEach(function(child) {
-        childObjects.push({
-          childElement: child,
-          parentElement: parent
+        .forEach(function (child) {
+          childObjects.push({
+            childElement: child,
+            parentElement: parent
+          });
         });
-      });
     });
 
     return childObjects;
-  }
+  };
 
-  const elementsToArray = function(elems) {
+  const elementsToArray = function (elems) {
     let elementArray = [];
     if (elems[0] == undefined) {
       // single element
       elementArray.push(elems);
     } else {
-      [].forEach.call(elems, function(elem) {
+      [].forEach.call(elems, function (elem) {
         elementArray.push(elem);
       });
     }
